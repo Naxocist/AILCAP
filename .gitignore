@@ -1,0 +1,5 @@
+*.pdf
+.ipynb_checkpoints
+small-dataset
+*.keras
+*.hdf5

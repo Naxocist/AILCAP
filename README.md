@@ -40,6 +40,8 @@ Commonly, in segmentation there are various deep learning models which are publi
 
 Each of them has different pros and cons that we need to test and compare their results and appropriately adapt to challenges.
 
+<br>
+
 # Tackling Challenges
 Let us elaborate solutions to previously mentioned challenges 
 

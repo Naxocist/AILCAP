@@ -14,7 +14,7 @@
 </a>
 </p>
 
-<br>
+<!-- <br> -->
 
 # Challenges
 - limited computing power, especially with large files like .svs (~2GB+)
@@ -23,7 +23,7 @@
 - Abnormal features that lie across multiple grid sections
 - How to actually handle large output segmented images?
 
-<br>
+<!-- <br> -->
 
 # Model choices
 Before tackling those challenges, Let us consider our deep learning segmentation model choices. <br>
@@ -32,7 +32,7 @@ Commonly, in segmentation there are various deep learning models which are publi
 
 <div align="center">
 
-[Ultralytics YOLO](https://docs.ultralytics.com/)|  [U-net](https://arxiv.org/pdf/1505.04597) | [Detectron](https://github.com/facebookresearch/detectron2)
+[Ultralytics YOLO](https://docs.ultralytics.com/)|  [U-net architecture](https://arxiv.org/pdf/1505.04597) | [Detectron2](https://github.com/facebookresearch/detectron2)
 :----------:|:------:|:------------:|
 <img src="./etc/images/ultralytics_yolov8.jpg" height="100"> | <img src="./etc/images/u-net-architecture.png" height="100"> | <img src="./etc/images/detectron2.png" height="100">
 

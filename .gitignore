@@ -3,3 +3,5 @@
 small-dataset
 *.keras
 *.hdf5
+
+node_modules

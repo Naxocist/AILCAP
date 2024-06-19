@@ -1,4 +1,3 @@
-import tensorflow as tf
 import segmentation_models as sm
 import numpy as np
 from matplotlib import pyplot as plt

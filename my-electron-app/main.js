@@ -1,4 +1,5 @@
-const {app, BrowserWindow, dialog, ipcMain} = require('electron')
+const {app, BrowserWindow, dialog, ipcMain} = require('electron');
+const { type } = require('node:os');
 const path = require('node:path')
 
 let win;
@@ -10,12 +11,12 @@ function createWindow() {
     width: 800, 
     height: 600, 
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'), // Load the preload script
+      preload: path.join(__dirname, './js/preload.js'), // Load the preload script
     }
   })
 
 
-  win.loadFile('./index.html')
+  win.loadFile('./html/index.html')
   // let contents = win.webContents;
   // console.log(contents)
 
@@ -32,18 +33,39 @@ function createWindow() {
 }
 
 
+const processSVS = (path) => new Promise((resolve, reject) => {
+
+  const { spawn } = require('node:child_process');
+
+  console.log("Data sent to python script: ", path);
+
+  const python_process = spawn('python', ['python/extracting_svs.py', path]);
+
+  python_process.stdout.on('data', data => {
+    console.log("Python script DONE!")
+    resolve()
+    // lst = data.toString().split('\n')
+    // console.log("Data received from python script:", lst);
+
+  })
+})
+
 const handleSelect = () => new Promise((resolve, reject) => {
   dialog.showOpenDialog(win, {
     properties: ['openFile'],
-    filters: [{ name: 'ScanScope Virtual Slide', extensions: ['*'] }]
+    filters: [{ name: 'ScanScope Virtual Slide', extensions: ['svs'] }]
   })
     .then(result => {
 
       if (result.canceled) {
-        reject('cancel')
+        reject('cancel');
+        return ;
       }
 
-      resolve(result.filePaths[0]);
+      const path = result.filePaths[0];
+
+      processSVS(path).then(resolve);
+      // resolve();
     })
     .catch(err => {
       console.log(err);

@@ -4,7 +4,7 @@ btn.addEventListener('click', async () => {
     console.log("CLICK!")
     try {
         await window.API.select();
-        window.location.href = 'process.html';
+        window.location.href = '../html/process.html';
     } catch (err) {
         console.log(err);
     }

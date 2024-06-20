@@ -47,6 +47,7 @@ for p in sys.path:
 OPENSLIDE_PATH = "D:/NSC2024_dataset/openslide-bin-4.0.0.2-windows-x64/bin"
 
 import os
+import sys
 
 # Windows 
 with os.add_dll_directory(OPENSLIDE_PATH):
@@ -62,6 +63,7 @@ from math import floor
 import glob
 
 import json
+import pyvips
 
 
 def display_svs_information(slide):
@@ -117,12 +119,10 @@ def visualize_svs(slide):
     print(f"level {best_level} is the best level for {SCALE_FACTOR} scale factor")
 
 
-def extract(slide, file_name):
-
-    base_dir = r'D:\NSC2024_dataset\extracted'
+def extract(slide, file, extracted_path):
 
     try: 
-        os.mkdir(base_dir + '\\' + file_name) 
+        os.mkdir(extracted_path + '/' + file + '/images') 
     except: 
         pass
 
@@ -149,7 +149,7 @@ def extract(slide, file_name):
         print(f"Tile dimension at level {level_num} is: ({x}, {y})")
         print(f"There are {num_tiles} tiles in level {level_num}")
 
-        level_dir = base_dir + f'\\{file_name}\\' + str(level_num)
+        level_dir = base_dir + f'\\{file}\\' + str(level_num)
 
         if not os.path.isdir(level_dir): os.mkdir(level_dir)
         if not os.path.isdir(level_dir + '\\full'): os.mkdir(level_dir + '\\full')
@@ -203,48 +203,67 @@ def extract(slide, file_name):
 def mean_std(np_img):
     return (np.mean(np_img), np.std(np_img))
 
+
+def convert_svs_to_dzi(svs_path, dzi_path, tile_size, overlap):
+    
+    try:
+
+        svs_image = pyvips.Image.new_from_file(svs_path)
+        levels = pyvips.Image.dzsave(
+            svs_image, dzi_path, tile_size=tile_size, overlap=overlap
+        )
+    except Exception as e:
+        print(e)
+    return levels
+
+
 if __name__ == "__main__":
+
+    extracted_path = 'C:/Program Files/AILCAP/'
+
+    svs = sys.argv[1]
+
     # Load the svs slide into an object.
-    svs_list = glob.glob('D:/NSC2024_dataset/svs/*.*')
+    file = svs.split('\\')[-1]
 
-    for svs in svs_list:
-        slide = open_slide(svs)
+    # C:/Program Files/AILCAP
+    try: os.mkdir(extracted_path) 
+    except: pass
 
-        if(not isinstance(slide, OpenSlide)):
-            raise TypeError(f"Expected an instance of OpenSlide, got {type(slide)}")
+    # C:/Program Files/AILCAP/extracted
+    try: 
+        extracted_path += 'extracted'
+        print(extracted_path)
+        os.mkdir(extracted_path)
+    except: pass
 
-        base_dir = 'D:/NSC2024_dataset/extracted'
-        file_name = svs.split('\\')[1]
+    # C:/Program Files/AILCAP/extracted/{svs_file_name}
+    try: 
+        os.mkdir(extracted_path + '/' + file)
+    except: pass
 
-        print(svs)
-
-        # get thumbnail
-        if not os.path.exists(base_dir + '/' + file_name + '/thumbnail.png'):
-            pass
-            # thumbnail = slide.get_thumbnail((2048, 2048))
-            # thumbnail_RGB = thumbnail.convert('RGB')
-            # thumbnail_np = np.array(thumbnail_RGB)
-            # plt.imsave(base_dir + '/' + file_name + '/thumbnail.png', thumbnail_np)
-
-
-        try: 
-            os.mkdir(base_dir + '/' + file_name)
-        except: 
-            pass
-
-        # extract(slide, file_name)
-        display_svs_information(slide)
-        # visualize_svs(slide)
+    # C:/Program Files/AILCAP/extracted/{svs_file_name}/dzi
+    dzi_path = f"{extracted_path}/{file}/dzi/"
+    try:
+        os.mkdir(dzi_path)
+    except: pass
 
 
-    # img = np.asarray(plt.imread('./test-images/blank/blank.png'))* 255
-    # mean, std = mean_std(img)
-    # print(mean, std)
+    # print(svs)
+    # print(dzi_path)
+    # levels = convert_svs_to_dzi(svs_path=svs, dzi_path=dzi_path + 'dz', tile_size=256, overlap=0)
+    exit()
 
-    # img = np.asarray(plt.imread('./test-images/full/full4.png'))* 255
-    # mean, std = mean_std(img)
-    # print(mean, std)
+    slide = open_slide(svs)
 
-    # img = np.asarray(plt.imread('./test-images/partial/partial4.png'))* 255
-    # mean, std = mean_std(img)
-    # print(mean, std)
+    # get thumbnail
+    thumbnail_path = extracted_path + '/' + file + '/thumbnail.png' 
+    if not os.path.exists(thumbnail_path):
+
+        thumbnail = slide.get_thumbnail((1920, 1080))
+        thumbnail_RGB = thumbnail.convert('RGB')
+        thumbnail_np = np.array(thumbnail_RGB)
+
+        plt.imsave(thumbnail_path, thumbnail_np)
+    
+    # extract(slide, file, extracted_path)

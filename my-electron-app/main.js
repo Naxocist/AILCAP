@@ -1,5 +1,4 @@
 const {app, BrowserWindow, dialog, ipcMain} = require('electron');
-const { type } = require('node:os');
 const path = require('node:path')
 
 let win;
@@ -16,7 +15,7 @@ function createWindow() {
   })
 
 
-  win.loadFile('./html/index.html')
+  win.loadFile('./html/process.html')
   // let contents = win.webContents;
   // console.log(contents)
 
@@ -43,10 +42,9 @@ const processSVS = (path) => new Promise((resolve, reject) => {
 
   python_process.stdout.on('data', data => {
     console.log("Python script DONE!")
+    lst = data.toString().split('\n')
+    console.log("Data received from python script:", lst);
     resolve()
-    // lst = data.toString().split('\n')
-    // console.log("Data received from python script:", lst);
-
   })
 })
 

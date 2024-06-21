@@ -249,10 +249,9 @@ if __name__ == "__main__":
     except: pass
 
 
-    # print(svs)
-    # print(dzi_path)
-    # levels = convert_svs_to_dzi(svs_path=svs, dzi_path=dzi_path + 'dz', tile_size=256, overlap=0)
     exit()
+    levels = convert_svs_to_dzi(svs_path=svs, dzi_path=dzi_path + 'dz', tile_size=256, overlap=0)
+    print("FINISHED")
 
     slide = open_slide(svs)
 

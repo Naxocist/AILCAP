@@ -1,16 +1,19 @@
 {
   "name": "my-electron-app",
+  "productName": "Hello World",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
     "start": "electron . --log-level=3",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "export": "electron-packager . HelloWorld --platform=win32 --arch=x64"
   },
-  "author": "",
+  "author": "Ratanon Khamrong",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "electron": "^31.0.1"
+    "electron": "^31.0.1",
+    "electron-packager": "^17.1.2"
   },
   "dependencies": {
     "child_process": "^1.0.2",

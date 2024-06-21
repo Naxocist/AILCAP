@@ -15,7 +15,7 @@ function createWindow() {
   })
 
 
-  win.loadFile('./html/process.html')
+  win.loadFile('./html/index.html')
   // let contents = win.webContents;
   // console.log(contents)
 

@@ -12,7 +12,7 @@ var viewer =  OpenSeadragon({
 
     showNavigator: true,
     navigatorPosition: "BOTTOM_RIGHT", 
-    navigatorSizeRatio: 0.6,
+    navigatorSizeRatio: 0.2,
 
     visibilityRatio: 0.8,
     constrainDuringPan: true,

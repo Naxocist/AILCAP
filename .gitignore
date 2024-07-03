@@ -3,6 +3,7 @@
 small-dataset
 *.keras
 *.hdf5
+*.tif
 
 node_modules
 

@@ -13,14 +13,13 @@ function createWindow() {
       preload: path.join(__dirname, './js/preload.js'), // Load the preload script
     }
   })
-
+  
 
   win.loadFile('./html/index.html')
   // let contents = win.webContents;
   // console.log(contents)
 
   win.webContents.openDevTools();
-
 
   win.once('ready-to-show', () => {
     win.show()

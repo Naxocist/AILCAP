@@ -1,9 +1,10 @@
 *.pdf
 .ipynb_checkpoints
-small-dataset
 *.keras
 *.hdf5
 *.tif
+*.tiff
+small-dataset
 
 node_modules
 

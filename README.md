@@ -18,7 +18,7 @@
 
 # Challenges
 - limited computing power, especially with large files like .svs (~2GB+)
-- Models' abilities to comprehend features
+- Models' abilities to comprehend features, especially with small ones.
 - Limited amount of focused cancer WSI which implies to dataset shortages
 - Abnormal features that lie across multiple grid sections
 - How to actually handle large output segmented images?

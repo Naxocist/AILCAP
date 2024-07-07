@@ -47,51 +47,19 @@ Each of them has different pros and cons that we need to test and compare their 
 # Tools
 Before we dive into possible ways to address aforementioned problem, let's list out available tools related to the problem.
 
-<div style="display: flex; justify-content: space-between;">
-  <div>
-    <h3 style='text-align: center;'>DL models</h3>
-    <div>
+|DL models|Python libs|Desktop App|Pathology tools|
+|----------------------------------------------------------|----------------------------------------------------------|---------------------------------------------------------------------------------------------------|---------------------------------------|
+|[Segmentation Models](https://github.com/qubvel/segmentation_models)|[tensorflow](https://www.tensorflow.org/)|[html](https://developer.mozilla.org/en-US/docs/Web/HTML) [css](https://developer.mozilla.org/en-US/docs/Web/CSS) [javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)|[QuPath](https://qupath.github.io/)|
+|[Ultralytics YOLO](https://docs.ultralytics.com/)|[keras](https://keras.io/)|[Nodejs](https://nodejs.org/en)|[ImageJ](https://imagej.net/ij/)|
+|[Detectron2](https://github.com/facebookresearch/detectron2)|[albumentations](https://albumentations.ai/)|[Electronjs](https://www.electronjs.org/)||
+||[numpy](https://numpy.org/)|[Openseadragon](https://openseadragon.github.io/docs/)||
+||[matplotlib](https://matplotlib.org/)|[GeoTIFFTileSource](https://github.com/pearcetm/GeoTIFFTileSource)||
+||[pillow](https://pillow.readthedocs.io/en/stable/)|||
+||[cv2](https://opencv.org/get-started/)|||
+||[tifffile](https://github.com/cgohlke/tifffile/tree/master)|||
+||[openslide](https://openslide.org/)|||
 
-  - [Segmentation Models](https://github.com/qubvel/segmentation_models)
-  - [Ultralytics YOLO](https://docs.ultralytics.com/)
-  - [Detectron2](https://github.com/facebookresearch/detectron2)
-    </div>
-  </div>
-  <div>
-    <h3 style='text-align: center;'>Python libs</h3>
-    <div>
 
-  - [tensorflow](https://www.tensorflow.org/)
-  - [keras](https://keras.io/)
-  - [albumentations](https://albumentations.ai/)
-  - [numpy](https://numpy.org/)
-  - [matplotlib](https://matplotlib.org/)
-  - [pillow](https://pillow.readthedocs.io/en/stable/)
-  - [cv2](https://opencv.org/get-started/)
-  - [tifffile](https://github.com/cgohlke/tifffile/tree/master)
-  - [openslide](https://openslide.org/)
-    </div>
-  </div>
-  <div>
-    <h3 style='text-align: center;'>Desktop App</h3>
-    <div>
-
-  - [html](https://developer.mozilla.org/en-US/docs/Web/HTML) [css](https://developer.mozilla.org/en-US/docs/Web/CSS) [javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-  - [Nodejs](https://nodejs.org/en)
-  - [Electronjs](https://www.electronjs.org/)
-  - [Openseadragon](https://openseadragon.github.io/docs/)
-  - [GeoTIFFTileSource](https://github.com/pearcetm/GeoTIFFTileSource)
-    </div>
-  </div>
-  <div>
-    <h3 style='text-align: center;'>Pathology tools</h3>
-    <div>
-
-  - [QuPath](https://qupath.github.io/)
-  - [ImageJ](https://imagej.net/ij/)
-    </div>
-  </div>
-</div>
 
 # Tackling Challenges
 Let us elaborate solutions to previously mentioned challenges.
@@ -101,4 +69,3 @@ We can easily divide WSI file into large amount of tiles. The number of tiles ob
 By using data augmentation techniques which are processes of rotating, cropping, flipping data to gain another data out of available data. These images will be given to models to ensure ability of generalizing images.
 
 When the abnormal features are lying across multiple tiles, we can't use "object detection model" easily as it frames the features with boxes so it is hard to merge boxes from each tile. Instead, we use segmentation model to "color" interested features so we can easily merge grids together.
-

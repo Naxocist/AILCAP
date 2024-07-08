@@ -5,7 +5,7 @@
 *.tif
 *.tiff
 small-dataset
-
+assets
 node_modules
 
 .vscode/*

@@ -1,8 +1,3 @@
-
-<style>
-
-</style>
-
 # AILCAP 
 
 ### Synopsis

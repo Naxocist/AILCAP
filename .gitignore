@@ -8,6 +8,8 @@ small-dataset
 assets
 node_modules
 
+.venv
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

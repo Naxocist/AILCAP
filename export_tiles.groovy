@@ -4,11 +4,13 @@ def imageData = getCurrentImageData()
 
 // Define output path (relative to project)
 def name = GeneralTools.getNameWithoutExtension(imageData.getServer().getMetadata().getName())
-def pathOutput = buildFilePath(PROJECT_BASE_DIR, 'export', name)
-def subPathOutput = buildFilePath(PROJECT_BASE_DIR, 'export', name, 'masks')
+//def pathOutput = buildFilePath(PROJECT_BASE_DIR, 'export', name)
+//def subPathOutput = buildFilePath(PROJECT_BASE_DIR, 'export', name, 'masks')
+//mkdirs(pathOutput)
+//mkdirs(subPathOutput)
+//
+def pathOutput = buildFilePath(PROJECT_BASE_DIR, 'export')
 mkdirs(pathOutput)
-mkdirs(subPathOutput)
-
 
 // Create an ImageServer where the pixels are derived from annotations
 def labelServer = new LabeledImageServer.Builder(imageData)
@@ -16,7 +18,9 @@ def labelServer = new LabeledImageServer.Builder(imageData)
 //    .downsample(downsample)    // Choose server resolution; this should match the resolution at which tiles are exported
     .addLabel('lepidic', 0)     
     .addLabel('acinar', 1)
-    .addLabel('micropapillary', 2)
+    .addLabel('solid', 2)
+    .addLabel('micropapillary', 3)
+    .addLabel('papillary', 4)
     .multichannelOutput(true)  // If true, each label is a different channel (required for multiclass probability)
     .build()
 

@@ -4,9 +4,12 @@
 *.hdf5
 *.tif
 *.tiff
+*.pth
 small-dataset
 assets
 node_modules
+data
+openslide_binary
 
 .venv
 

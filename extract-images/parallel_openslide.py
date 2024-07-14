@@ -65,7 +65,7 @@ def parallel_tile_extraction(slide_path, output_dir, level=0, tile_size=512, ove
             future.result()  # This will raise any exceptions that occurred
 
 if __name__ == "__main__":
-    slide_path = "path/to/your/file.svs"
-    output_dir = "path/to/output/tiles"
+    slide_path = r"C:\Users\USER\Desktop\CMU-1.svs"
+    output_dir = r"D:\NSC2024\extracted\CMU-1.svs"
     
-    parallel_tile_extraction(slide_path, output_dir, level=0, tile_size=512, overlap=0, num_workers=4)
+    parallel_tile_extraction(slide_path, output_dir, level=0, tile_size=256, overlap=0, num_workers=4)

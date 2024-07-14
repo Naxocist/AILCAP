@@ -7,6 +7,8 @@ def name = GeneralTools.getNameWithoutExtension(imageData.getServer().getMetadat
 
 double spatialCalibration = imageData.getServer().getPixelCalibration().getAveragedPixelSize()
 
+def SIZE = 1024
+
 println "Spatial Calibration is " + spatialCalibration + " µm"
 
 // Define output resolution
@@ -18,7 +20,7 @@ for (int i = 0; i < 4; i++) {
     def folder = factor.toString()
     println "Extracting downsample x" + factor + " of " + name
     
-    def pathOutput = buildFilePath(PROJECT_BASE_DIR, 'export', '512', folder)
+    def pathOutput = buildFilePath(PROJECT_BASE_DIR, 'export', SIZE.toString(), folder)
     mkdirs(pathOutput)
     
 //    double downsample = requestedPixelSize / spatialCalibration
@@ -30,9 +32,9 @@ for (int i = 0; i < 4; i++) {
         .downsample(downsample)    // Choose server resolution; this should match the resolution at which tiles are exported
         .addLabel('lepidic', 0)     
         .addLabel('acinar', 1)
-        .addLabel('solid', 2)
-        .addLabel('micropapillary', 3)
-        .addLabel('papillary', 4)
+        .addLabel('micropapillary', 2)
+        .addLabel('papillary', 3)
+        .addLabel('solid', 4)
         .multichannelOutput(true)  // If true, each label is a different channel (required for multiclass probability)
         .build()
     
@@ -40,15 +42,15 @@ for (int i = 0; i < 4; i++) {
     new TileExporter(imageData)
         .downsample(downsample)     // Define export resolution
         .imageExtension('.tif')     // Define file extension for original pixels (often .tif, .jpg, '.png' or '.ome.tif')
-        .tileSize(512)
+        .tileSize(SIZE)
         .labeledServer(labelServer) // Define the labeled image server to use (i.e. the one we just built)
-        .annotatedTilesOnly(true)  // If true, only export tiles if there is a (labeled) annotation present
-        .overlap(100)               // Define overlap, in pixel units at the export resolution    .exportJSON(true)
-        .labeledImageSubDir("\\masks")
-        .imageSubDir("\\images")
+        .annotatedTilesOnly(true)   // If true, only export tiles if there is a (labeled) annotation present
+        .overlap((SIZE/8).toInteger())                // Define overlap, in pixel units at the export resolution    .exportJSON(true)
+        .labeledImageSubDir("/masks")
+        .imageSubDir("/images")
         
-        .writeTiles(pathOutput)    // Write tiles to the specified directory
-    
+        .writeTiles(pathOutput)     // Write tiles to the specified directory
+
     // The overlap is already included in the tile size 
 }
 

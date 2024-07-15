@@ -6,10 +6,10 @@
 *.tiff
 *.pth
 small-dataset
-assets
 node_modules
 data
 openslide_binary
+sandbox
 
 .venv
 

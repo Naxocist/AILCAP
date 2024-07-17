@@ -1,15 +1,19 @@
 import os
+import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-OPENSLIDE_PATH = 'D:/NSC2024/source-code/openslide_binary/bin'
+OPENSLIDE_PATH = r'D:\OneDrive-CMU\Desktop_Dell\NSC2024\AILCAP\openslide_binary\bin'
 with os.add_dll_directory(OPENSLIDE_PATH):
     import openslide
 
 
+def mean_std(np_img):
+    return (np.mean(np_img), np.std(np_img))
+
 def extract_tile(slide, level, x, y, tile_size, output_dir, file_prefix):
     """
     Extract a tile from the slide and save it as an image file.
-    
+    p
     Args:
     - slide (OpenSlide object): The whole slide image object.
     - level (int): The level of the slide to extract from.
@@ -19,9 +23,22 @@ def extract_tile(slide, level, x, y, tile_size, output_dir, file_prefix):
     - output_dir (str): Directory to save the extracted tiles.
     - file_prefix (str): Prefix for the output file names.
     """
+    
     # Extract the tile
     tile = slide.read_region((x, y), level, (tile_size, tile_size))
     tile = tile.convert("RGB")
+
+    tile_np = np.asarray(tile)
+
+    mean, std = mean_std(tile_np * 255) # mean and standard deviation of image pixel values
+    folder = 'blank'
+    if mean <= 210 and std >= 20:
+        folder = 'full'
+    elif mean <= 235 and std >= 13:
+        folder = 'partial'
+
+    if folder == 'blank':
+        return 
     
     # Create the output file path
     output_path = os.path.join(output_dir, f"{file_prefix}_{x}_{y}.jpg")
@@ -65,7 +82,7 @@ def parallel_tile_extraction(slide_path, output_dir, level=0, tile_size=512, ove
             future.result()  # This will raise any exceptions that occurred
 
 if __name__ == "__main__":
-    slide_path = r"C:\Users\USER\Desktop\CMU-1.svs"
-    output_dir = r"D:\NSC2024\extracted\CMU-1.svs"
+    slide_path = r"E:\AILCAP\S58-03668 B.svs"
+    output_dir = r"E:\AILCAP\grid"
     
-    parallel_tile_extraction(slide_path, output_dir, level=0, tile_size=256, overlap=0, num_workers=4)
+    parallel_tile_extraction(slide_path, output_dir, level=0, tile_size=256, overlap=32, num_workers=4)

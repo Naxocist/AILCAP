@@ -12,6 +12,10 @@ openslide_binary
 sandbox
 models-sandbox
 
+*.svs
+*.npy
+*.dat
+
 .venv
 
 .vscode/*

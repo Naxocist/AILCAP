@@ -44,7 +44,7 @@ for p in sys.path:
 
 """
 
-OPENSLIDE_PATH = "D:/NSC2024_dataset/openslide-bin-4.0.0.2-windows-x64/bin"
+OPENSLIDE_PATH = r"D:\OneDrive-CMU\Desktop_Dell\PROJECT\NSC2024\AILCAP\openslide_binary\bin"
 
 import os
 
@@ -60,16 +60,15 @@ import numpy as np
 from matplotlib import pyplot as plt
 from math import floor
 import glob
-
-import json
+from pprint import pprint
 
 
 def display_svs_information(slide):
     slide_dims = slide.dimensions # 0th level
     slide_props = slide.properties
 
-    pretty_slide_props = json.dumps(dict(slide_props), indent=4)
-    print(pretty_slide_props)
+    # pretty_slide_props = json.dumps(dict(slide_props), indent=4)
+    pprint(dict(slide_props))
 
     num_lvl = slide_props['openslide.level-count']
     vendor = slide_props['openslide.vendor']
@@ -205,6 +204,16 @@ def mean_std(np_img):
 
 if __name__ == "__main__":
     # Load the svs slide into an object.
+
+    slide = open_slide(r"E:\AILCAP\S56-01604_phD_B.svs")
+
+    display_svs_information(slide)
+
+    image = slide.read_region(location=(69000, 40000), size=(4000, 4000), level=0)
+
+    image.save('./image.png')
+
+    exit()
     svs_list = glob.glob('D:/NSC2024_dataset/svs/*.*')
 
     for svs in svs_list:

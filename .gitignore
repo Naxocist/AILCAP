@@ -10,6 +10,7 @@ node_modules
 data
 openslide_binary
 sandbox
+models-sandbox
 
 .venv
 

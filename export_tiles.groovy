@@ -7,7 +7,7 @@ def name = GeneralTools.getNameWithoutExtension(imageData.getServer().getMetadat
 
 double spatialCalibration = imageData.getServer().getPixelCalibration().getAveragedPixelSize()
 
-def SIZE = 1024
+def SIZE = 512
 
 println "Spatial Calibration is " + spatialCalibration + " µm"
 
@@ -28,13 +28,13 @@ for (int i = 0; i < 4; i++) {
 
     // Create an ImageServer where the pixels are derived from annotations
     def labelServer = new LabeledImageServer.Builder(imageData)
-    //    .backgroundLabel(0) // Specify background label (usually 0 or 255)
+        .backgroundLabel(0) // Specify background label (usually 0 or 255)
         .downsample(downsample)    // Choose server resolution; this should match the resolution at which tiles are exported
-        .addLabel('lepidic', 0)     
-        .addLabel('acinar', 1)
-        .addLabel('micropapillary', 2)
-        .addLabel('papillary', 3)
-        .addLabel('solid', 4)
+        .addLabel('lepidic', 1)     
+        .addLabel('acinar', 2)
+        .addLabel('micropapillary', 3)
+        .addLabel('papillary', 4)
+        .addLabel('solid', 5)
         .multichannelOutput(true)  // If true, each label is a different channel (required for multiclass probability)
         .build()
     

@@ -11,6 +11,8 @@ data
 openslide_binary
 sandbox
 models-sandbox
+logs
+models
 
 *.svs
 *.npy

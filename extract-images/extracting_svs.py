@@ -209,7 +209,7 @@ if __name__ == "__main__":
 
     display_svs_information(slide)
 
-    image = slide.read_region(location=(69000, 40000), size=(4000, 4000), level=0)
+    image = slide.read_region(location=(69000, 40000), size=(4096, 4096), level=0)
 
     image.save('./image.png')
 

@@ -23,9 +23,11 @@ var viewer =  OpenSeadragon({
 
 const fileInput = document.getElementById('fileInput');
 
+let file_path = undefined
+
 fileInput.addEventListener('change', async () => {
-  const file = fileInput.files[0];
-  console.log('Selected file:', file);
+  file_path = fileInput.files[0];
+  console.log('Selected file:', file_path);
   viewer.close();
 
   let tf = await OpenSeadragon.GeoTIFFTileSource.getAllTileSources(file, {
@@ -34,3 +36,10 @@ fileInput.addEventListener('change', async () => {
 
   viewer.open(tf)
 });
+
+
+const test = () => {
+  // const { spawn } = require('node:child_process');
+  
+  console.log("CLICK :", file_path)
+}

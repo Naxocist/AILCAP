@@ -40,6 +40,7 @@
       }
     }
   </script>
+
   <script defer src="../js/index.js"> </script>
 
   <style>
@@ -61,7 +62,8 @@
         <label for="formFile" class="form-label">Choose a Whole Slide Image (.svs)</label>
         <input class="form-control" type="file" id="fileInput" accept=".svs">
       </div>
-
+      <button type="submit" class="mt-2 btn btn-success" onclick="test()">start predicting</button>
+      
       <div class="result">
       </div>
     </div>

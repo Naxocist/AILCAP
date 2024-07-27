@@ -32,13 +32,14 @@ function createWindow() {
 }
 
 
+
 const processSVS = (path) => new Promise((resolve, reject) => {
 
   const { spawn } = require('node:child_process');
 
   console.log("Data sent to python script: ", path);
 
-  const python_process = spawn('python', ['python/extracting_svs.py', path]);
+  const python_process = spawn('python', ['python', path]);
 
   python_process.stdout.on('data', data => {
     console.log("Python script DONE!")
@@ -62,7 +63,7 @@ const handleSelect = () => new Promise((resolve, reject) => {
 
       const path = result.filePaths[0];
 
-      processSVS(path).then(resolve);
+      // processSVS(path).then(resolve);
       // resolve();
     })
     .catch(err => {

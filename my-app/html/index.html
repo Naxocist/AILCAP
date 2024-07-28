@@ -48,12 +48,16 @@
       margin: 0;
       padding: 0;
     }
+
+    body {
+      background-color: black;
+    }
   </style>
 </head>
 
 <body>
 
-  <div class="flex">
+  <div class="flex h-[100vh]">
 
     <!-- sidebar -->
     <div class="p-[20px] bg-cyan-100">
@@ -62,16 +66,25 @@
         <label for="formFile" class="form-label">Choose a Whole Slide Image (.svs)</label>
         <input class="form-control" type="file" id="fileInput" accept=".svs, .png, .jpg, .jpeg">
       </div>
-      <button type="submit" class="mt-2 btn btn-success" onclick="test()">start predicting</button>
+
+      <button id="predict" type="submit" class="mt-2 btn btn-primary w-full" onclick="run_script()">start predicting</button>
       
-      <div class="result">
-        <button></button>
+      <div class="flex mt-2" id="loading">
+
+        <div class="progress mt-[5px] w-full">
+          <div id="progress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+        
+      <div id="buttons" class="flex flex-col">
       </div>
     </div>
 
-    <!-- deep zoom viwer -->
-    <div class="flex bg-black flex-col grow-[1] h-[100vh]" id="content">
-      <div id="dz" class="cursor-grab active:cursor-grabbing box-border w-full h-full"></div>
+    <!-- content -->
+    <div id="content" class="flex w-[100vw]">
+      <div class="flex bg-black flex-col grow-[1] h-[100vh]">
+        <div id="dz" class="cursor-grab active:cursor-grabbing box-border w-full h-full"></div>
+      </div>
     </div>
   </div>
 </body>

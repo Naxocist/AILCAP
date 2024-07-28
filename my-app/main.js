@@ -1,86 +1,43 @@
-const {app, BrowserWindow, dialog, ipcMain} = require('electron');
-const path = require('node:path')
-
+const { app, BrowserWindow, dialog, ipcMain } = require("electron");
+const { join } = require("path")
 
 let win;
 
-function createWindow() {
+app.whenReady().then(main);
 
+function main() {
   win = new BrowserWindow({ 
-    show: false,
     width: 800, 
     height: 600, 
+    autoHideMenuBar: true,
+    show: false,
     webPreferences: {
-      preload: path.join(__dirname, './js/preload.js'), // Load the preload script
+      preload: join(__dirname, './js/preload.js') // Load the preload script
     }
   })
-  
 
   win.loadFile('./html/index.html')
-  // let contents = win.webContents;
-  // console.log(contents)
-
   win.webContents.openDevTools();
-
-  win.once('ready-to-show', () => {
-    win.show()
-  })
-
-  win.on('closed', () => {
-    win = null
-  });
+  win.on('ready-to-show', win.show)
 }
 
+ipcMain.on("process", (event, args) => {
+  const { spawn } = require("node:child_process");
 
+  const py = spawn('python', ['./js/script.py', args]);
 
-const processSVS = (path) => new Promise((resolve, reject) => {
+  // on python output
+  py.stdout.on("data", function (data) {
+    msg = data.toString()
+    win.webContents.send("message", msg)
+  });
 
-  const { spawn } = require('node:child_process');
-
-  console.log("Data sent to python script: ", path);
-
-  const python_process = spawn('python', ['python', path]);
-
-  python_process.stdout.on('data', data => {
-    console.log("Python script DONE!")
-    lst = data.toString().split('\n')
-    console.log("Data received from python script:", lst);
-    resolve()
+  py.stderr.on('data', (data) => {
+    console.error(`Error: ${data}`);
+  });
+  
+  py.stdout.on("end", function () {
+    console.log("script.py terminated!")
+    win.webContents.send("message", "done");
   })
 })
-
-const handleSelect = () => new Promise((resolve, reject) => {
-  dialog.showOpenDialog(win, {
-    properties: ['openFile'],
-    filters: [{ name: 'ScanScope Virtual Slide', extensions: ['svs'] }]
-  })
-    .then(result => {
-
-      if (result.canceled) {
-        reject('cancel');
-        return ;
-      }
-
-      const path = result.filePaths[0];
-
-      // processSVS(path).then(resolve);
-      // resolve();
-    })
-    .catch(err => {
-      console.log(err);
-      reject("ERROR!")
-    })
-})
-
-
-app.whenReady().then(() => {
-  ipcMain.handle('select', handleSelect)
-  createWindow()
-})
-
-// For Mac
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});

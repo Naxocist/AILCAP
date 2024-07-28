@@ -1,9 +1,13 @@
-const { contextBridge, ipcRenderer } = require('electron')
-// import { contextBridge, ipcRenderer } from "electron";
+const { contextBridge, ipcRenderer } = require("electron")
 
-contextBridge.exposeInMainWorld('API', {
-    select: () => ipcRenderer.invoke('select')
-})
+const WINDOW_API = {
+    process: (message) => ipcRenderer.send("process", message),
+    onMessage: (callback) => ipcRenderer.on("message", (event, args) => {
+        callback(args)
+    })
+}
+
+contextBridge.exposeInMainWorld('api', WINDOW_API)
   
 
     

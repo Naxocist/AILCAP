@@ -1,5 +1,5 @@
 import os
-import sys
+import sys, json
 import numpy as np
 import cv2
 from PIL import Image
@@ -15,27 +15,53 @@ with os.add_dll_directory(root_dir / "openslide_binary/bin"):
 
 from tensorflow.keras.models import load_model
 
-# ======== TEST MODE ========
-from glob import glob
-import time
+subtypes = ["background", "lepidic", "acinar", "micro", "pap", "solid"]
+file_path = sys.argv[1]
+subtype = file_path.split('\\')[-1].split('.')[0]
 
-images = glob(str(current_dir / "assets/dummy_cropped_predicted/*") )
-for i in images:
-    print(i, flush=True)
-    time.sleep(0.025)
-exit()
+# ======== TEST MODE ========
+# from glob import glob
+# import time
+
+# images = glob(str(current_dir / f"assets/{subtype}/cropped_predicted/*") )
+# for i in images:
+#     print(i, flush=True)
+#     time.sleep(0.025)
+
+
+
+# stringify = open(current_dir / f"assets/{subtype}/data.txt", "r").read()
+# print("#"+stringify)
+# exit()
 # ===========================
 
+# data = {
+#     "lepidic": 10,
+#     "acinar": 15,
+#     "micro": 5,
+#     "pap": 7,
+#     "solid": 2
+# }
 
-model  = load_model(str(current_dir / "demo_model.keras"), compile=False)
+model_path_all_criterion = current_dir / "models/all criterion/best_model.keras"
+model_path_class_indexes_all_criterion = current_dir / "models/class indexes + all criterion/best_model.keras"
+model_path_imbalance_criterion = current_dir / "models/imbalance criterion/best_model.keras"
+model  = load_model(str(model_path_class_indexes_all_criterion), compile=False)
 
 # image = cv2.imread("./assets/test.png", cv2.IMREAD_COLOR)
-file_path = sys.argv[1]
+
 image = cv2.imread(file_path, cv2.IMREAD_COLOR)
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 height, width, channels = image.shape
 
-dump = current_dir / "assets/cropped_predicted"
+dump = current_dir / f"assets/{subtype}/cropped_predicted"
+data = {
+    "lepidic": 0,
+    "acinar": 0,
+    "micro": 0,
+    "pap": 0,
+    "solid": 0
+}
 
 
 def gray_to_rgb(x):
@@ -57,11 +83,21 @@ def gray_to_rgb(x):
 
 def extract(x, y, len):
     cropped = image[y:y+len,x:x+len,:]
+
+    if cropped.shape[0] != 512 or cropped.shape[1] != 512:
+        return
+
     expanded = np.expand_dims(cropped, axis=0)
 
     y_pred = model(expanded)
     y_pred_argmax = np.argmax(y_pred, axis=3)
     y_pred_argmax = np.squeeze(y_pred_argmax, axis=0)
+    
+    c = np.unique(y_pred_argmax)
+    for i in c:
+        if i == 0: 
+            continue 
+        data[subtypes[i]] += 1
     
     segmented = gray_to_rgb(y_pred_argmax)
 
@@ -90,3 +126,10 @@ with ThreadPoolExecutor(max_workers=8) as executor:
     # Wait for all futures to complete
     for future in as_completed(futures):
         future.result()  # This will raise any exceptions that occurred
+
+
+stringify = json.dumps(data)
+f = open(current_dir / f"assets/{subtype}/data.txt", "w")
+f.write(stringify)
+print("#"+stringify)
+f.close()

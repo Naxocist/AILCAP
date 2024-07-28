@@ -34,6 +34,8 @@ let file = undefined
 const content = document.getElementById("content")
 const fileInput = document.getElementById('fileInput');
 const buttons = document.getElementById('buttons');
+const intrepret = document.getElementById('intrepret')
+intrepret.classList.add("invisible")
 
 
 function replaceContent(newContent) {
@@ -70,7 +72,6 @@ async function openFile(path) {
 
   // normal images
   if (['png', 'jpg', 'jpeg'].includes(ext)) {
-    console.log("EXT: ", ext)
     viewer.open({
       type: "image",
       url: path,
@@ -105,6 +106,7 @@ fileInput.addEventListener('change', () => {
 
   file = fileInput.files[0];
   showDeepzoom(null)
+
 });
 
 // -------------------------------------------------------------------------------------------------------------------
@@ -184,6 +186,32 @@ const run_script = () => {
 
       buttons.appendChild(manualBtn)
       buttons.appendChild(resBtn)
+
+      intrepret.classList.remove("invisible")
+
+      return 
+    }
+
+    if(path[0] == '#') {
+      path = path.substring(1)
+      const data = JSON.parse(path)
+      console.log(data)
+
+      const lepidic = document.getElementById('lepidic')
+      lepidic.innerHTML = `lepidic: ${data['lepidic']} (${Math.floor(data['lepidic']/64 * 100)}%)`
+
+      const acinar = document.getElementById('acinar')
+      acinar.innerHTML = `acinar: ${data['acinar']} (${Math.floor(data['acinar']/64 * 100)}%)`
+
+      const micro = document.getElementById('micro')
+      micro.innerHTML = `micro: ${data['micro']} (${Math.floor(data['micro']/64 * 100)}%)`
+
+      const pap = document.getElementById('pap')
+      pap.innerHTML = `pap: ${data['pap']} (${Math.floor(data['pap']/64 * 100)}%)`
+
+      const solid = document.getElementById('solid')
+      solid.innerHTML = `solid: ${data['solid']} (${Math.floor(data['solid']/64 * 100)}%)`
+
       return 
     }
 

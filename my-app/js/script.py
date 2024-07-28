@@ -9,18 +9,26 @@ parent_dir = Path(os.path.dirname(os.path.dirname(os.getcwd())))
 with os.add_dll_directory(parent_dir / "openslide_binary/bin"):
     import openslide
 
+from tensorflow.keras.models import load_model
+model  = load_model('./demo_model.keras', compile=False)
 
 image = cv2.imread("./assets/test.png", cv2.IMREAD_COLOR)
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 height, width, channels = image.shape
 
-
 def extract(x, y, len):
-    cropped = image[y:y+len,x:x+len,:]
-    cropped_img = Image.fromarray(cropped)
-    dump = Path("./assets/cropped")
+    cropped: np.ndarray = image[y:y+len,x:x+len,:]
+    expanded = np.expand_dims(cropped, axis=0)
+
+    y_pred = model(expanded)
+    y_pred_argmax = np.argmax(y_pred, axis=3)
+    y_pred_argmax = np.squeeze(y_pred_argmax, axis=0)
+    print(y_pred_argmax.shape)
+
+    result = Image.fromarray(y_pred_argmax)
+    dump = Path("./assets/cropped_predicted")
     if not os.path.isdir(dump): os.mkdir(dump)
-    cropped_img.save(dump / f"{x}_{y}.png")
+    result.save(dump / f"{x}_{y}.png")
 
 
 SIZE = 512

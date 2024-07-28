@@ -60,16 +60,17 @@
       <h1 class="font-[700] text-[24px]">AILCAP</h1>
       <div>
         <label for="formFile" class="form-label">Choose a Whole Slide Image (.svs)</label>
-        <input class="form-control" type="file" id="fileInput" accept=".svs">
+        <input class="form-control" type="file" id="fileInput" accept=".svs, .png, .jpg, .jpeg">
       </div>
       <button type="submit" class="mt-2 btn btn-success" onclick="test()">start predicting</button>
       
       <div class="result">
+        <button></button>
       </div>
     </div>
 
     <!-- deep zoom viwer -->
-    <div class="flex bg-black flex-col grow-[1] h-[100vh]">
+    <div class="flex bg-black flex-col grow-[1] h-[100vh]" id="content">
       <div id="dz" class="cursor-grab active:cursor-grabbing box-border w-full h-full"></div>
     </div>
   </div>

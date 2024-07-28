@@ -35,50 +35,54 @@ const content = document.getElementById("content")
 const fileInput = document.getElementById('fileInput');
 const buttons = document.getElementById('buttons');
 
+
 function replaceContent(newContent) {
   content.removeChild(content.firstElementChild);
   content.appendChild(newContent)
 }
 
-async function openFile(file) {
-  // console.log('Selected file:', file);
-  const fileName = file.name;
-  const fileExtension = fileName.split('.').pop().toLowerCase();
-  // console.log('Selected file:', fileName);
-  // console.log('File extension:', fileExtension);
+
+async function openFile(path) {
+  
+  const fileExt = file ? file.name.split('.').pop().toLowerCase() : null;
+  
+  // .svs (file object)
+  if (fileExt === '.svs') {
+    
+    let tf = await OpenSeadragon.GeoTIFFTileSource.getAllTileSources(file, {
+      logLatency: false,
+    });
+    
+    viewer.open(tf);
+    return 
+  }
+
+  let ext = ""
+  
+  if (path === null) {
+    path = file.path;
+    ext = file.path.split('.').pop().toLowerCase();
+  }else {
+    ext = path.split('.').pop().toLowerCase();
+  }
+
+  ext = ext.trim().replace(/[\s\u200B-\u200D\uFEFF]/g, ''); // remove hidden character
 
   // normal images
-  if (['png', 'jpg', 'jpeg'].includes(fileExtension)) {
+  if (['png', 'jpg', 'jpeg'].includes(ext)) {
+    console.log("EXT: ", ext)
     viewer.open({
       type: "image",
-      url: file.path,
-      buildPyramid: false
+      url: path,
+      buildPyramid: false,
     })
     return 
   }
 
-  // .svs
-  let tf = await OpenSeadragon.GeoTIFFTileSource.getAllTileSources(file, {
-    logLatency: false,
-  });
-
-  viewer.open(tf);
 }
 
 
-fileInput.addEventListener('change', () => {
-
-  while(buttons.firstChild) {
-    buttons.removeChild(buttons.firstChild)
-  }
-
-  file = fileInput.files[0];
-  showDeepzoom()
-  // openFile(file)
-});
-
-
-function showDeepzoom() {
+function showDeepzoom(path) {
   const outerDiv = document.createElement('div');
   outerDiv.className = 'flex bg-black flex-col grow-[1] h-[100vh]';
   const innerDiv = document.createElement('div');
@@ -89,18 +93,31 @@ function showDeepzoom() {
   replaceContent(outerDiv)
 
   viewer_setup()
-  openFile(file)
+  openFile(path)
 }
 
 
+fileInput.addEventListener('change', () => {
+
+  while(buttons.firstChild) {
+    buttons.removeChild(buttons.firstChild)
+  }
+
+  file = fileInput.files[0];
+  showDeepzoom(null)
+});
+
 // -------------------------------------------------------------------------------------------------------------------
+
+
+// showDeepzoom('D:/OneDrive-CMU/Desktop_Dell/PROJECT/NSC2024/AILCAP/my-app/js/assets/dummy_cropped_predicted/0_0.png')
 
 // back to viewer
 const manualBtn = document.createElement('button');
 manualBtn.type = 'button';
 manualBtn.className = 'mt-2 btn btn-warning';
 manualBtn.textContent = 'back to viewer';
-manualBtn.onclick = showDeepzoom
+manualBtn.onclick = () => showDeepzoom(file.path)
 
 // result 
 const resBtn = document.createElement('button');
@@ -137,8 +154,9 @@ function showImages() {
 
   for (let i = 0; i < images.length; i++) {
     const img = document.createElement('img');
-    img.className = "w-[200px] h-[200px]"
+    img.className = "w-[200px] h-[200px] hover:cursor-pointer"
     img.src = images[i];
+    img.onclick = () => showDeepzoom(images[i])
 
     imgContainer.appendChild(img)
   }

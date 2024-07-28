@@ -22,7 +22,7 @@ import time
 images = glob(str(current_dir / "assets/dummy_cropped_predicted/*") )
 for i in images:
     print(i, flush=True)
-    time.sleep(0.1)
+    time.sleep(0.025)
 exit()
 # ===========================
 

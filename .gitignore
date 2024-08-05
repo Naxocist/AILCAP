@@ -17,6 +17,7 @@ pdf
 node_modules
 logs
 models
+assets
 
 .vscode/*
 !.vscode/settings.json

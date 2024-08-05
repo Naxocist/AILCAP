@@ -66,6 +66,7 @@ Python libs|Desktop App|Pathology tools|
 
 ### limited computing power
 At a glance, we can easily divide WSI file into large amount of smaller tiles. The number of tiles obviously depends on the size of extracted tiles. In this case, we choose **256px * 256px**. Additionally, we need to add overlaps (~25px) between tiles to ensure that each image provides some context for certain region.
+
 > * This way models also have a chance to perceive tiny details in WSI.<br>
 > * Normally, WSI dimensions are around 10<sup>5</sup>px * 10<sup>5</sup>px, thus, we are going to obtain large dataset from WSI. 
 > * Along with data augmentation techniques which are processes of rotating, cropping, flipping data to gain another data out of existing data. These images will be given to models to ensure ability of generalizing images.

@@ -1,7 +1,9 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: AILCAP
+authors:
+- family-names: "Khamrong"
+  given-names: "Ratanon"
+title: "AILCAP"
 version: 1.0.0
 date-released: 2024-08-05
-url: https://github.com/Naxocist/AILCAP
-repository-code: https://github.com/Naxocist/AILCAP
+url: "https://github.com/github-linguist/linguist"

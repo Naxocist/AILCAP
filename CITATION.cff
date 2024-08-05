@@ -1,18 +1,7 @@
 cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
 title: AILCAP
 version: 1.0.0
 date-released: 2024-08-05
 url: https://github.com/Naxocist/AILCAP
 repository-code: https://github.com/Naxocist/AILCAP
-
-references:
-  - type: miscellaneous
-    title: Segmentation Models
-    authors:
-      - family-names: Iakubovskii
-        given-names: Pavel
-    version: 2019
-    date-released: 2019-01-01
-    publisher: GitHub
-    url: https://github.com/qubvel/segmentation_models
-    repository-code: https://github.com/qubvel/segmentation_models

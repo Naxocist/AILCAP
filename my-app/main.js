@@ -12,11 +12,11 @@ function main() {
     autoHideMenuBar: true,
     show: false,
     webPreferences: {
-      preload: join(__dirname, './js/preload.js') // Load the preload script
+      preload: join(__dirname, 'src/js/preload.js') // Load the preload script
     }
   })
 
-  win.loadFile('./html/index.html')
+  win.loadFile('src/html/index.html')
   win.webContents.openDevTools();
   win.on('ready-to-show', win.show)
 }
@@ -24,20 +24,22 @@ function main() {
 ipcMain.on("process", (event, args) => {
   const { spawn } = require("node:child_process");
 
-  const py = spawn('python', ['./js/script.py', args]);
+  const py = spawn('python', ['src/python/script.py', args]);
 
   // on python output
-  py.stdout.on("data", function (data) {
+  py.stdout.on("data", data => {
     msg = data.toString()
     win.webContents.send("message", msg)
   });
 
-  py.stderr.on('data', (data) => {
-    console.error(`Error: ${data}`);
+  py.stderr.on('data', data => {
+    // console.error(`Error: ${data}`);
+    msg = data.toString()
+    win.webContents.send("error", msg)
   });
   
-  py.stdout.on("end", function () {
-    console.log("script.py terminated!")
+  py.stdout.on("end", () => {
+    // console.log("script.py terminated!")
     win.webContents.send("message", "done");
   })
 })

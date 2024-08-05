@@ -1,0 +1,8 @@
+@misc{Yakubovskiy:2019,
+  Author = {Pavel Iakubovskii},
+  Title = {Segmentation Models},
+  Year = {2019},
+  Publisher = {GitHub},
+  Journal = {GitHub repository},
+  Howpublished = {\url{https://github.com/qubvel/segmentation_models}}
+}

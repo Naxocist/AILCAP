@@ -1,1 +1,0 @@
-{"lepidic": 10, "acinar": 15, "micro": 5, "pap": 7, "solid": 2}

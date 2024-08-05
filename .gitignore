@@ -5,20 +5,18 @@
 *.tif
 *.tiff
 *.pth
-small-dataset
-node_modules
-data
-openslide_binary
-sandbox
-models-sandbox
-logs
-models
-
 *.svs
 *.npy
 *.dat
 
 .venv
+
+training
+sandbox
+pdf
+node_modules
+logs
+models
 
 .vscode/*
 !.vscode/settings.json

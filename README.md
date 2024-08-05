@@ -25,14 +25,15 @@
 
 <!-- <br> -->
 
-# Model choices
-Commonly, in segmentation there are various deep learning models which are published with well-written documentation paper. The following models are interesting models for pathology segmentaion tasks.
+# Models implementation
+Commonly, in segmentation there are various deep learning models which are published with well-written documentation paper. There is existing pytorch library and tensorflow wrapper that allow us to use the predefined segmentation models at ease, both developed by qubvel teams
 
 <div align="center">
 
-[Ultralytics YOLO](https://docs.ultralytics.com/)|  [U-net architecture](https://arxiv.org/pdf/1505.04597) | [Detectron2](https://github.com/facebookresearch/detectron2)
-:----------:|:------:|:------------:|
-<img src="./etc/images/ultralytics_yolov8.jpg" height="100"> | <img src="./etc/images/u-net-architecture.png" height="100"> | <img src="./etc/images/detectron2.png" height="100">
+
+[segmentation models [tensorflow / pytorch]](https://segmentation-models.readthedocs.io/en/latest/)|
+:----------:|
+<img src="https://camo.githubusercontent.com/6d479a7662bbe1b66408dc2b8bebb18f35991acc83a997e2a82e3a2e79f37c05/68747470733a2f2f692e6962622e636f2f4774784753386d2f5365676d656e746174696f6e2d4d6f64656c732d56312d536964652d332d312e706e67" height="100"> 
 
 </div>
 
@@ -44,17 +45,18 @@ Before we dive into possible ways to address aforementioned problem, let's list 
 
 <div align="center">
 
-|DL models|Python libs|Desktop App|Pathology tools|
-|----------------------------------------------------------|----------------------------------------------------------|---------------------------------------------------------------------------------------------------|---------------------------------------|
-|[Segmentation Models](https://github.com/qubvel/segmentation_models)|[tensorflow](https://www.tensorflow.org/)|[html](https://developer.mozilla.org/en-US/docs/Web/HTML) [css](https://developer.mozilla.org/en-US/docs/Web/CSS) [javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)|[QuPath](https://qupath.github.io/)|
-|[Ultralytics YOLO](https://docs.ultralytics.com/)|[keras](https://keras.io/)|[Nodejs](https://nodejs.org/en)|[ImageJ](https://imagej.net/ij/)|
-|[Detectron2](https://github.com/facebookresearch/detectron2)|[albumentations](https://albumentations.ai/)|[Electronjs](https://www.electronjs.org/)||
-||[numpy](https://numpy.org/)|[Openseadragon](https://openseadragon.github.io/docs/)||
-||[matplotlib](https://matplotlib.org/)|[GeoTIFFTileSource](https://github.com/pearcetm/GeoTIFFTileSource)||
-||[pillow](https://pillow.readthedocs.io/en/stable/)|||
-||[cv2](https://opencv.org/get-started/)|||
-||[tifffile](https://github.com/cgohlke/tifffile/tree/master)|||
-||[openslide](https://openslide.org/)|||
+Python libs|Desktop App|Pathology tools|
+----------------------------------------------------------|---------------------------------------------------------------------------------------------------|---------------------------------------|
+[tensorflow](https://www.tensorflow.org/)|[html](https://developer.mozilla.org/en-US/docs/Web/HTML) [css](https://developer.mozilla.org/en-US/docs/Web/CSS) [javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)|[QuPath](https://qupath.github.io/)|
+[keras](https://keras.io/)|[Nodejs](https://nodejs.org/en)|[ImageJ](https://imagej.net/ij/)|
+[albumentations](https://albumentations.ai/)|[Electronjs](https://www.electronjs.org/)||
+[numpy](https://numpy.org/)|[Openseadragon](https://openseadragon.github.io/docs/)||
+[matplotlib](https://matplotlib.org/)|[GeoTIFFTileSource](https://github.com/pearcetm/GeoTIFFTileSource)||
+[pillow](https://pillow.readthedocs.io/en/stable/)|||
+[cv2](https://opencv.org/get-started/)|||
+[tifffile](https://github.com/cgohlke/tifffile/tree/master)|||
+|[openslide](https://openslide.org/)|||
+|[pytorch](https://pytorch.org/)|||
 
 </div>
 

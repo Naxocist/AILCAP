@@ -1,9 +1,8 @@
-cff-version: 1.2.0
-message: If you use this repository, please cite it as follows:
-title: Segmentation Models
-authors:
-  - family-names: Iakubovskii
-    given-names: Pavel
-date: 2019-01-01
-version: v1.0.0
-repository-code: https://github.com/qubvel/segmentation_models
+@misc{Yakubovskiy:2019,
+  Author = {Pavel Iakubovskii},
+  Title = {Segmentation Models},
+  Year = {2019},
+  Publisher = {GitHub},
+  Journal = {GitHub repository},
+  Howpublished = {\url{https://github.com/qubvel/segmentation_models}}
+}

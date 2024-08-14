@@ -41,7 +41,7 @@ intrepret.classList.add("invisible")
 
 // dynamic subpage
 function replaceContent(newContent) {
-  content.removeChild(content.firstElementChild) 
+  content.innerHTML = ""
   content.appendChild(newContent) 
 }
 
@@ -52,8 +52,8 @@ async function openFile(path) {
 
   
   // .svs (file object)
-  if (fileExt === 'svs') {
-    
+  if (fileExt === 'svs' && path === null) {
+
     let tf = await OpenSeadragon.GeoTIFFTileSource.getAllTileSources(file, {
       logLatency: false,
     }) 
@@ -73,6 +73,7 @@ async function openFile(path) {
 
   ext = ext.trim().replace(/[\s\u200B-\u200D\uFEFF]/g, '')  // remove hidden character
 
+  console.log(path)
   // normal images
   if (['png', 'jpg', 'jpeg'].includes(ext)) {
     viewer.open({
@@ -82,7 +83,6 @@ async function openFile(path) {
     })
     return  
   }
-
 }
 
 
@@ -103,11 +103,12 @@ function showDeepzoom(path) {
 
 fileInput.addEventListener('change', () => {
 
-  while(buttons.firstChild) {
-    buttons.removeChild(buttons.firstChild) 
-  }
+  buttons.innerHTML = ""
+  if(!intrepret.classList.contains("invisible")) intrepret.classList.add("invisible") 
 
   file = fileInput.files[0] 
+  if(file === undefined) return 
+
   // console.log(file)
   showDeepzoom(null) 
 }) 
@@ -122,7 +123,7 @@ const manualBtn = document.createElement('button')
 manualBtn.type = 'button' 
 manualBtn.className = 'mt-2 btn btn-warning' 
 manualBtn.textContent = 'back to viewer' 
-manualBtn.onclick = () => showDeepzoom(file.path)
+manualBtn.onclick = () => showDeepzoom(null)
 
 // result 
 const resBtn = document.createElement('button') 
@@ -151,26 +152,33 @@ let images = []
 
 
 function showImages() {
+  showDeepzoom(images[0]) 
+  return 
   const imgContainer = document.createElement('div') 
-  imgContainer.className = 'p-2 flex flex-wrap justify-around gap-[20px] overflow-y-scroll w-full' 
+  imgContainer.className = 'p-[40px] gap-[40px] flex flex-wrap items-start overflow-y-scroll w-full' 
   imgContainer.id = 'img-container' 
 
-  replaceContent(imgContainer)
+  imgContainer.innerHTML = ""
+
 
   for (let i = 0;  i < images.length;  i++) {
     const img = document.createElement('img') 
-    img.className = "w-[200px] h-[200px] hover:cursor-pointer" 
+    img.className = "w-[250px] h-[250px] hover:cursor-pointer" 
     img.src = images[i] 
     img.onclick = () => showDeepzoom(images[i]) 
 
     imgContainer.appendChild(img) 
   }
+
+  replaceContent(imgContainer)
 }
 
 
 const run_script = () => {
+  if(!intrepret.classList.contains("invisible")) intrepret.classList.add("invisible") 
+
   const file_path = file.path 
-  console.log("current file path :", file_path) 
+  // console.log("current file path :", file_path) 
 
   const progress = document.getElementById("progress") 
   progress.style.width = '0%' 
@@ -190,50 +198,59 @@ const run_script = () => {
   // Listen to "message"
   window.api.onMessage(msg => {
 
-    // tracker
-    if(msg[0] == '#') {
+    // data
+    if(msg[0] === '$') {
       msg = msg.substring(1) 
       const data = JSON.parse(msg) 
-      console.log(data) 
+      console.log("DATA: ", data) 
 
       const lepidic = document.getElementById('lepidic') 
-      lepidic.innerHTML = `lepidic: ${data['lepidic']} (${Math.floor(data['lepidic']/64 * 100)}%)` 
+      lepidic.innerHTML = `lepidic: ${data['lepidic']} (${data['lepidic'] * 100}%)` 
 
       const acinar = document.getElementById('acinar') 
-      acinar.innerHTML = `acinar: ${data['acinar']} (${Math.floor(data['acinar']/64 * 100)}%)` 
+      acinar.innerHTML = `acinar: ${data['acinar']} (${data['acinar'] * 100}%)` 
 
       const micro = document.getElementById('micro') 
-      micro.innerHTML = `micro: ${data['micro']} (${Math.floor(data['micro']/64 * 100)}%)` 
+      micro.innerHTML = `micropapillary: ${data['micropapillary']} (${data['micropapillary'] * 100}%)` 
 
       const pap = document.getElementById('pap') 
-      pap.innerHTML = `pap: ${data['pap']} (${Math.floor(data['pap']/64 * 100)}%)` 
+      pap.innerHTML = `papillary: ${data['papillary']} (${data['papillary'] * 100}%)` 
 
       const solid = document.getElementById('solid') 
-      solid.innerHTML = `solid: ${data['solid']} (${Math.floor(data['solid']/64 * 100)}%)` 
+      solid.innerHTML = `solid: ${data['solid']} (${data['solid'] * 100}%)` 
 
       return  
     }
 
     // subgrid images
     if(msg[0] === '+') {
-      console.log(msg) 
-      let p = Math.floor((images.push(msg)/64) * 100) 
-      console.log(p) 
-      progress.style.width = `${p}%` 
-
+      msg = msg.substring(1) 
+      console.log("Added", msg) 
+      len = images.push(msg)
       return 
     }
 
+    // progress
+    if(msg[0] === '@') {
+      msg = msg.substring(1).trim().replace(/[\s\u200B-\u200D\uFEFF]/g, '')  // remove hidden character
+      console.log(`current percent: ${msg}%`)
+      progress.style.width = `${msg}%` 
+      return 
+    }
+
+    // done
     if(msg === "done") {
       const spinner = document.getElementById("spinner") 
-      spinner.remove() 
+      if(spinner) spinner.remove() 
 
       buttons.appendChild(manualBtn) 
       buttons.appendChild(resBtn) 
 
-      intrepret.classList.remove("invisible") 
+      if (intrepret) intrepret.classList.remove("invisible") 
+      console.log("PYTHON DONE!")
+      return 
     }
 
-    console.log("py: ", msg)
+    console.log(msg)
   })
 }

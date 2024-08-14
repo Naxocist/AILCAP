@@ -22,8 +22,8 @@
     crossorigin="anonymous"></script>
 
   <!-- Tailwind -->
-  <link rel="stylesheet" href="output.css">
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <!-- <link rel="stylesheet" href="output.css"> -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <script defer src="../js/index.js"> </script>
 
@@ -44,7 +44,7 @@
   <div class="flex h-[100vh]">
 
     <!-- sidebar -->
-    <div class="p-[20px] bg-cyan-100">
+    <div class="p-[20px] bg-white">
       <h1 class="font-[700] text-[24px]">AILCAP</h1>
       <div>
         <label for="formFile" class="form-label">select a biopsy sample</label>
@@ -67,22 +67,21 @@
       <div class="intrepret flex flex-col gap-[10px] text-center mt-2" id="intrepret">
         <div>
           <h1 class="font-[600] text-[18px] inline">Adenocarcinoma</h1>
-          <h1 class="font-[400] text-[16px]">out of 64 tiles...</h1>
         </div>
-        <div class="bg-red-200 rounded-1">
-          <p id="lepidic">lepidic: 0 (0%)</p>
+        <div class="bg-red-300 rounded-1">
+          <p id="solid">solid: 0 (0%)</p>
         </div>
-        <div class="bg-green-200 rounded-1">
-          <p id="acinar">acinar: 0 (0%)</p>
-        </div>
-        <div class="bg-blue-200 rounded-1">
+        <div class="bg-green-300 rounded-1">
           <p id="micro">micropapillary: 0 (0%)</p>
         </div>
-        <div class="bg-yellow-200 rounded-1">
-          <p id="pap">papillary: 0 (0%)</p>
+        <div class="bg-purple-300 rounded-1">
+          <p id="lepidic">lepidic: 0 (0%)</p>
         </div>
-        <div class="bg-pink-200 rounded-1">
-          <p id="solid">solid: 0 (0%)</p>
+        <div class="bg-blue-300 rounded-1">
+          <p id="acinar">acinar: 0 (0%)</p>
+        </div>
+        <div class="bg-yellow-300 rounded-1">
+          <p id="pap">papillary: 0 (0%)</p>
         </div>
       </div>
     </div>

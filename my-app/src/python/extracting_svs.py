@@ -44,14 +44,18 @@ for p in sys.path:
 
 """
 
-OPENSLIDE_PATH = "D:/NSC2024_dataset/openslide-bin-4.0.0.2-windows-x64/bin"
-
+from pathlib import Path
 import os
 import sys
 
-# Windows 
+current_dir = Path(__file__).parent
+root_dir = current_dir.parent.parent
+
+OPENSLIDE_PATH = root_dir / "utils/openslide_binary/bin"
+
 with os.add_dll_directory(OPENSLIDE_PATH):
     import openslide
+
 
 from openslide import open_slide, OpenSlide
 from openslide.deepzoom import DeepZoomGenerator
@@ -63,7 +67,6 @@ from math import floor
 import glob
 
 import json
-import pyvips
 
 
 def display_svs_information(slide):
@@ -218,51 +221,29 @@ def convert_svs_to_dzi(svs_path, dzi_path, tile_size, overlap):
 
 
 if __name__ == "__main__":
+    current_dir = Path(__file__).parent
+    root = Path(r"D:\NSC2024\svs")
+    file_name = "S59-14994 B.svs"
 
-    extracted_path = 'C:/Program Files/AILCAP/'
+    slide = open_slide(root / file_name)
 
-    svs = sys.argv[1]
+    location = (29750, 38427)
+    size = 12288
 
-    # Load the svs slide into an object.
-    file = svs.split('\\')[-1]
+    section = slide.read_region(location, 0, (size, size)).convert('RGB')
+    export_name = "solid_ex2.png"
 
-    # C:/Program Files/AILCAP
-    try: os.mkdir(extracted_path) 
-    except: pass
-
-    # C:/Program Files/AILCAP/extracted
-    try: 
-        extracted_path += 'extracted'
-        print(extracted_path)
-        os.mkdir(extracted_path)
-    except: pass
-
-    # C:/Program Files/AILCAP/extracted/{svs_file_name}
-    try: 
-        os.mkdir(extracted_path + '/' + file)
-    except: pass
-
-    # C:/Program Files/AILCAP/extracted/{svs_file_name}/dzi
-    dzi_path = f"{extracted_path}/{file}/dzi/"
-    try:
-        os.mkdir(dzi_path)
-    except: pass
-
-
-    exit()
-    levels = convert_svs_to_dzi(svs_path=svs, dzi_path=dzi_path + 'dz', tile_size=256, overlap=0)
-    print("FINISHED")
-
-    slide = open_slide(svs)
+    os.makedirs(current_dir / 'examples', exist_ok=True)
+    section.save(current_dir / f"examples/{export_name}")
 
     # get thumbnail
-    thumbnail_path = extracted_path + '/' + file + '/thumbnail.png' 
-    if not os.path.exists(thumbnail_path):
+    # thumbnail_path = extracted_path + '/' + file + '/thumbnail.png' 
+    # if not os.path.exists(thumbnail_path):
 
-        thumbnail = slide.get_thumbnail((1920, 1080))
-        thumbnail_RGB = thumbnail.convert('RGB')
-        thumbnail_np = np.array(thumbnail_RGB)
+    #     thumbnail = slide.get_thumbnail((1920, 1080))
+    #     thumbnail_RGB = thumbnail.convert('RGB')
+    #     thumbnail_np = np.array(thumbnail_RGB)
 
-        plt.imsave(thumbnail_path, thumbnail_np)
+    #     plt.imsave(thumbnail_path, thumbnail_np)
     
     # extract(slide, file, extracted_path)

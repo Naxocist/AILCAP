@@ -24,6 +24,7 @@ function main() {
 ipcMain.on("process", (event, args) => {
   const { spawn } = require("node:child_process");
 
+  // const py = spawn('python', ['src/python/demo-script.py', args]);
   const py = spawn('python', ['src/python/script.py', args]);
 
   // on python output

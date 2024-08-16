@@ -55,7 +55,7 @@ class_num = len(classes)
 model_id = 0
 
 arch = ["unet"][model_id]
-encoder_name = ["resnet34"][model_id]
+encoder_name = ["resnet50"][model_id]
 
 model = smp.create_model(
     arch=arch, 

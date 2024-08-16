@@ -1,8 +1,8 @@
+
 import os
 import sys, json
 import numpy as np
 import cv2
-import tifffile
 from pathlib import Path
 from PIL import Image
 
@@ -34,16 +34,6 @@ output_file_path = current_dir / f"output/{file_name}/{file_name_without_ext}.pn
 
 data_path = current_dir / f"output/{file_name}/data.txt"
 
-# if os.path.isfile(output_file_path) and os.path.isfile(data_path): 
-# 	print("@100", flush=True)
-# 	time.sleep(eps)
-# 	print('+' + str(output_file_path), flush=True)
-# 	time.sleep(eps)
-# 	f = open(data_path, "r")
-# 	print('$' + f.read(), flush=True)
-# 	f.close()
- 
-# 	exit()
 
 output_folder = current_dir / f"output/{file_name}"
 output_folder.mkdir(parents=True, exist_ok=True)
@@ -52,10 +42,11 @@ classes = ['background', 'solid', 'micropapillary']
 subtypes = ["solid", "micropapillary"]
 class_num = len(classes)
 
+
 model_id = 0
 
-arch = ["unet"][model_id]
-encoder_name = ["resnet50"][model_id]
+arch = ["unet", "unetplusplus"][model_id]
+encoder_name = "resnet101"
 
 model = smp.create_model(
     arch=arch, 
@@ -65,8 +56,11 @@ model = smp.create_model(
     classes=class_num
 )
 
-model_path = current_dir / "models/test.pth"
+model_name = "unet_resnet101_20_epochs.pth"
+model_path = current_dir / f"models/{arch}_{encoder_name}/{model_name}"
+print(model_name, model_path)
 model.load_state_dict(torch.load(f=model_path, weights_only=True))
+
 
 
 slide = open_slide(file_path) if is_svs else cv2.cvtColor(cv2.imread(file_path), cv2.COLOR_BGR2RGB)

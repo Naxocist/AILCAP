@@ -222,16 +222,16 @@ def convert_svs_to_dzi(svs_path, dzi_path, tile_size, overlap):
 
 if __name__ == "__main__":
     current_dir = Path(__file__).parent
-    root = Path(r"D:\NSC2024\svs")
-    file_name = "S58-03668 B.svs"
+    root = Path(r"E:\NSC2024_final\svs")
+    file_name = "S59-14994 B.svs"
 
     slide = open_slide(root / file_name)
 
-    location = (56330, 33799)
+    location = (34829, 44885)
     size = 4096
 
     section = slide.read_region(location, 0, (size, size)).convert('RGB')
-    export_name = "not_solid_ex1.png"
+    export_name = "solid_ex2.png"
 
     os.makedirs(current_dir / 'examples', exist_ok=True)
     section.save(current_dir / f"examples/{export_name}")

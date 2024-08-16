@@ -25,6 +25,13 @@ ipcMain.on("process", (event, args) => {
   const { spawn } = require("node:child_process");
 
   // const py = spawn('python', ['src/python/demo-script.py', args]);
+  // const lib = spawn('conda', ['activate', 'AILCAP'])
+
+  // lib.stdout.on("end", () => {
+  //   // console.log("script.py terminated!")
+  //   console.log("activated conda")
+  // })
+
   const py = spawn('python', ['src/python/script.py', args]);
 
   // on python output

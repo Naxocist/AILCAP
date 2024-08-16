@@ -17,7 +17,7 @@ double requestedPixelSize = spatialCalibration
 
 def factors = [1, 1.5, 2, 4] as double[]
 
-for (int i = 0; i < 3; i++) {
+for (int i = 0; i < 4; i++) {
     def factor = factors[i]
     def folder = factor.toString()
     println "Extracting downsample x" + factor + " of " + name
